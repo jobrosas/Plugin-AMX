@@ -1,0 +1,1 @@
+console.log("Hello World! (from create-block-bloque-categorias-colores block)");
