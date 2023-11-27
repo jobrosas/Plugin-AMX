@@ -8,5 +8,40 @@
 .wp-block-create-block-bloque-categorias-colores {
 	background-color: #21759b;
 	color: #fff;
-	padding: 2px;
+	padding: 10px;
 }
+
+// src/block/style.scss
+.bloque-categorias-colores {
+	// Estilos por defecto
+	background-color: rgb(232, 204, 204)000;
+	color: #000;
+	padding: 10px;
+	position: relative;
+  }
+  
+  .bloque-categorias-colores.nacional {
+	background-color: #00b049;
+	color: #fff;
+  }
+  
+  .bloque-categorias-colores.entretenimiento {
+	background-color: #ffc915;
+	color: #fff;
+  }
+  
+  .bloque-categorias-colores.tecnologia {
+	background-color: #00d3f8;
+	color: #fff;
+  }
+  
+  .bloque-categorias-colores.mascotas {
+	background-color: #90456d;
+	color: #fff;
+  }
+  
+  .bloque-categorias-colores.deportes {
+	background-color: #ff372c;
+	color: #fff;
+  }
+  
