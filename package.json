@@ -1,8 +1,8 @@
 {
 	"name": "bloque-categorias-colores",
 	"version": "0.1.0",
-	"description": "Example block scaffolded with Create Block tool.",
-	"author": "The WordPress Contributors",
+	"description": "AMX Plugin Block",
+	"author": "Job Rosas",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {
@@ -16,11 +16,5 @@
 	},
 	"devDependencies": {
 		"@wordpress/scripts": "^26.17.0"
-	},
-	"dependencies": {
-		"@wordpress/api-fetch": "^6.43.0",
-		"@wordpress/components": "^25.12.0",
-		"@wordpress/data": "^9.16.0",
-		"@wordpress/editor": "^13.23.0"
 	}
 }
