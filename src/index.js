@@ -1,39 +1,93 @@
-/**
- * Registers a new block provided a unique name and an object defining its behavior.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
- */
+// src/block/index.js
 import { registerBlockType } from '@wordpress/blocks';
+import { InspectorControls, BlockControls } from '@wordpress/block-editor';
+import { PanelBody, SelectControl, TextControl } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
 
-/**
- * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
- * All files containing `style` keyword are bundled together. The code used
- * gets applied both to the front of your site and to the editor.
- *
- * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
- */
 import './style.scss';
 
-/**
- * Internal dependencies
- */
-import Edit from './edit';
-import save from './save';
-import metadata from './block.json';
+const BloqueCategoriasColores = ({ attributes, setAttributes }) => {
+  const { selectedCategory, title, description } = attributes;
 
-/**
- * Every block starts by registering a new block type definition.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
- */
-registerBlockType( metadata.name, {
-	/**
-	 * @see ./edit.js
-	 */
-	edit: Edit,
+  // Obtén las categorías de los posts usando la API REST de WordPress
+  const categorias = useSelect((select) => {
+    return select('core').getEntityRecords('taxonomy', 'category', { per_page: -1 });
+  }, []);
 
-	/**
-	 * @see ./save.js
-	 */
-	save,
-} );
+  console.log('Categorías:', categorias);
+
+  // Maneja la selección de categoría
+  const handleCategoryChange = (value) => {
+    console.log('Categoría seleccionada:', value);
+    setAttributes({ selectedCategory: value });
+  };
+
+  console.log('Atributos:', attributes);
+
+  return (
+    <>
+      <InspectorControls>
+        <PanelBody title="Configuración del Bloque">
+          {categorias && categorias.length > 0 && (
+            <SelectControl
+              label="Selecciona una categoría"
+              value={selectedCategory}
+              options={categorias.map((cat) => ({ label: cat.name, value: cat.slug }))}
+              onChange={handleCategoryChange}
+            />
+          )}
+          <TextControl
+            label="Título del Bloque"
+            value={title}
+            onChange={(value) => setAttributes({ title: value })}
+          />
+          <TextControl
+            label="Descripción del Bloque"
+            value={description}
+            onChange={(value) => setAttributes({ description: value })}
+          />
+        </PanelBody>
+      </InspectorControls>
+      <BlockControls>
+        <div className={`bloque-categorias-colores ${selectedCategory}`}>
+          <h2>{title}</h2>
+          <p>{description}</p>
+        </div>
+      </BlockControls>
+    </>
+  );
+};
+
+registerBlockType('bloque-categorias-colores/bloque-categorias-colores', {
+  title: 'Bloque Categorías Colores',
+  icon: 'format-aside',
+  category: 'common',
+  attributes: {
+    selectedCategory: {
+      type: 'string',
+      default: '', // Default category
+    },
+    title: {
+      type: 'string',
+      default: 'Título del Bloque',
+    },
+    description: {
+      type: 'string',
+      default: 'Descripción del Bloque',
+    },
+  },
+  edit: BloqueCategoriasColores,
+  save: ({ attributes }) => {
+    const { selectedCategory, title, description } = attributes;
+
+    return (
+      <div className={`bloque-categorias-colores ${selectedCategory}`}>
+        <h2>{title}</h2>
+        <p>{description}</p>
+        {selectedCategory && (
+          <a href={`/category/${selectedCategory}`}>Ir a {selectedCategory}</a>
+        )}
+      </div>
+    );
+  },
+});
